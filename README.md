@@ -1,4 +1,4 @@
-Generate bacterial species trees through alignments of 92 core genes.
+Generate bacterial species trees through alignments of 93 core genes.
 
 Dependencies:
 * ASTRAL (https://github.com/smirarab/ASTRAL)
