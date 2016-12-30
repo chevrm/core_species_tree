@@ -1,0 +1,112 @@
+Alanyl-tRNA synthetase	alaS	YES	TIGR00344 (HMM): alanine--tRNA ligase	
+Arginyl-tRNA synthetase	argS	YES	PF00750 (HMM): arginine--tRNA ligase	
+Aspartyl-tRNA synthetase	aspS	YES	TIGR00459 (HMM): aspartate--tRNA ligase	
+Obg family GTPase CgtA	cgtA	YES	TIGR02729 (HMM): Obg family GTPase CgtA	
+dephospho-CoA kinase	coaE	YES	TIGR00152 (HMM): dephospho-CoA kinase	
+cysteinyl-tRNA synthetase	cysS	YES	TIGR00435 (HMM): cysteine--tRNA ligase	
+chromosomal replication initiator protein DnaA	dnaA	YES	TIGR00362 (HMM): chromosomal replication initiator protein DnaA	
+DNA primase	dnaG	YES	TIGR01391 (HMM): DNA primase	
+chaperone protein DnaK	dnaK	YES	TIGR02350 (HMM): chaperone protein DnaK	
+DNA polymerase III, beta subunit	dnaN	YES	TIGR00663 (HMM): DNA polymerase III, beta subunit	
+DNA polymerase III, subunits gamma and tau	dnaX	YES	TIGR02397 (HMM): DNA polymerase III, subunit gamma and tau	
+ribosome-associated GTPase EngA	engA	YES	TIGR03594 (HMM): ribosome-associated GTPase EngA	
+GTP-binding protein Era	era	YES	TIGR00436 (HMM): GTP-binding protein Era	
+signal recognition particle protein	ffh	YES	TIGR00959 (HMM): signal recognition particle protein	
+methionyl-tRNA formyltransferase	fmt	YES	TIGR00460 (HMM): methionyl-tRNA formyltransferase	
+ribosome recycling factor	frr	YES	TIGR00496 (HMM): ribosome recycling factor	
+signal recognition particle-docking protein FtsY	ftsY	YES	TIGR00064 (HMM): signal recognition particle-docking protein FtsY	
+glycyl-tRNA synthetase	glyS	YES	TIGR00389 (HMM): glycine--tRNA ligase
+TIGR00388 (HMM): glycine--tRNA ligase, alpha subunit	
+guanylate kinase	gmk	YES	TIGR03263 (HMM): guanylate kinase	
+co-chaperone GrpE	grpE	YES	PF01025 (HMM): co-chaperone GrpE	
+DNA gyrase, A subunit	gyrA	YES	TIGR01063 (HMM): DNA gyrase, A subunit	
+DNA gyrase, B subunit	gyrB	YES	TIGR01059 (HMM): DNA gyrase, B subunit	
+histidyl-tRNA synthetase	hisS	YES	TIGR00442 (HMM): histidine--tRNA ligase	
+isoleucyl-tRNA synthetase	ileS	YES	TIGR00392 (HMM): isoleucine--tRNA ligase	
+translation initiation factor IF-2	infB	YES	TIGR00487 (HMM): translation initiation factor IF-2	
+translation initiation factor IF-3	infC	YES	TIGR00168 (HMM): translation initiation factor IF-3	
+dimethyladenosine transferase	ksgA	YES	TIGR00755 (HMM): ribosomal RNA small subunit methyltransferase A	
+GTP-binding protein LepA	lepA	YES	TIGR01393 (HMM): elongation factor 4	
+leucyl-tRNA synthetase	leuS	YES	TIGR00396 (HMM): leucine--tRNA ligase	
+DNA ligase, NAD-dependent	ligA	YES	TIGR00575 (HMM): DNA ligase, NAD-dependent	
+tRNA (5-methylaminomethyl-2-thiouridylate)-methyltransferase	mnmA	YES	TIGR00420 (HMM): tRNA (5-methylaminomethyl-2-thiouridylate)-methyltransferase	
+MraW methylase family	mraW	YES	PF01795 (HMM): MraW methylase family	
+transcription termination factor NusA	nusA	YES	TIGR01953 (HMM): transcription termination factor NusA	
+transcription termination/antitermination factor NusG	nusG	YES	TIGR00922 (HMM): transcription termination/antitermination factor NusG	
+phosphoglycerate kinase	pgk	YES	PF00162 (HMM): phosphoglycerate kinase	
+phenylalanyl-tRNA synthetase, alpha subunit	pheS	YES	TIGR00468 (HMM): phenylalanine--tRNA ligase, alpha subunit	
+phenylalanyl-tRNA synthetase, beta subunit	pheT	YES	TIGR00471 (HMM): phenylalanine--tRNA ligase, beta subunit
+TIGR00472 (HMM): phenylalanine--tRNA ligase, beta subunit	
+peptide chain release factor 1	prfA	YES	TIGR00019 (HMM): peptide chain release factor 1	
+prolyl-tRNA synthetase	proS	YES	TIGR00408 (HMM): proline--tRNA ligase
+TIGR00409 (HMM): proline--tRNA ligase	
+CTP synthase	pyrG	YES	TIGR00337 (HMM): CTP synthase	
+recA protein	recA	YES	TIGR02012 (HMM): protein RecA	
+ribosome-binding factor A	rfbA	YES	TIGR00082 (HMM): ribosome-binding factor A	
+ribonuclease III	rnc	YES	TIGR02191 (HMM): ribonuclease III	
+ribosomal protein L1	rplA	YES	TIGR01169 (HMM): ribosomal protein uL1	
+ribosomal protein L2	rplB	YES	TIGR01171 (HMM): ribosomal protein uL2	
+ribosomal protein L3	rplC	YES	PF00297 (HMM): ribosomal protein uL3	
+ribosomal protein L4	rplD	YES	PF00573 (HMM): ribosomal protein uL4	
+ribosomal protein L5	rplE	YES	PF00281 (HMM): ribosomal protein uL5	
+ribosomal protein L6	rplF	YES	PF00347 (HMM): ribosomal protein uL6	
+ribosomal protein L9	rplI	YES	TIGR00158 (HMM): ribosomal protein bL9	
+ribosomal protein L10	rplJ	YES	PF00466 (HMM): ribosomal protein uL10	
+ribosomal protein L11	rplK	YES	TIGR01632 (HMM): ribosomal protein uL11	
+ribosomal protein L7/L12	rplL	YES	TIGR00855 (HMM): ribosomal protein bL12	
+ribosomal protein L13	rplM	YES	TIGR01066 (HMM): ribosomal protein uL13	
+ribosomal protein L14	rplN	YES	TIGR01067 (HMM): ribosomal protein uL14	
+ribosomal protein L15	rplO	YES	TIGR01071 (HMM): ribosomal protein uL15	
+ribosomal protein L16	rplP	YES	TIGR01164 (HMM): ribosomal protein uL16	
+ribosomal protein L17	rplQ	YES	TIGR00059 (HMM): ribosomal protein bL17	
+ribosomal protein L18	rplR	YES	TIGR00060 (HMM): ribosomal protein uL18	
+ribosomal protein L19	rplS	YES	TIGR01024 (HMM): ribosomal protein bL19	
+ribosomal protein L20	rplT	YES	TIGR01032 (HMM): ribosomal protein bL20	
+ribosomal protein L21	rplU	YES	TIGR00061 (HMM): ribosomal protein bL21	
+ribosomal protein L22	rplV	YES	TIGR01044 (HMM): ribosomal protein uL22	
+ribosomal protein L23	rplW	YES	PF00276 (HMM): ribosomal protein uL23	
+ribosomal protein L24	rplX	YES	TIGR01079 (HMM): ribosomal protein uL24	
+ribosomal protein L27	rpmA	YES	TIGR00062 (HMM): ribosomal protein bL27	
+ribosomal protein L28	rpmB	YES	TIGR00009 (HMM): ribosomal protein bL28	
+ribosomal protein L29	rpmC	YES	TIGR00012 (HMM): ribosomal protein uL29	
+ribosomal protein L32	rpmF	YES	TIGR01031 (HMM): ribosomal protein bL32	
+ribosomal protein L34	rpmH	YES	TIGR01030 (HMM): ribosomal protein bL34	
+ribosomal protein L35	rpmI	YES	TIGR00001 (HMM): ribosomal protein bL35	
+DNA-directed RNA polymerase, alpha subunit	rpoA	YES	TIGR02027 (HMM): DNA-directed RNA polymerase, alpha subunit	
+DNA-directed RNA polymerase, beta subunit	rpoB	YES	TIGR02013 (HMM): DNA-directed RNA polymerase, beta subunit	
+DNA-directed RNA polymerase, beta' or beta'' subunit	rpoC	YES	TIGR02386 (HMM): DNA-directed RNA polymerase, beta' subunit
+TIGR02387 (HMM): DNA-directed RNA polymerase, gamma subunit	
+ribosomal protein S2	rpsB	YES	TIGR01011 (HMM): ribosomal protein uS2	
+ribosomal protein S3	rpsC	YES	TIGR01009 (HMM): ribosomal protein uS3	
+ribosomal protein S4	rpsD	YES	TIGR01017 (HMM): ribosomal protein uS4	
+ribosomal protein S5	rpsE	YES	TIGR01021 (HMM): ribosomal protein uS5	
+ribosomal protein S6	rpsF	YES	TIGR00166 (HMM): ribosomal protein bS6	
+ribosomal protein S7	rpsG	YES	TIGR01029 (HMM): ribosomal protein uS7	
+ribosomal protein S8	rpsH	YES	PF00410 (HMM): ribosomal protein uS8	
+ribosomal protein S9	rpsI	YES	PF00380 (HMM): ribosomal protein uS9	
+ribosomal protein S10	rpsJ	YES	TIGR01049 (HMM): ribosomal protein uS10	
+ribosomal protein S11	rpsK	YES	PF00411 (HMM): ribosomal protein uS11	
+ribosomal protein S12	rpsL	YES	TIGR00981 (HMM): ribosomal protein uS12	
+ribosomal protein S13	rpsM	YES	PF00416 (HMM): ribosomal protein uS13	
+ribosomal protein S15	rpsO	YES	TIGR00952 (HMM): ribosomal protein uS15	
+ribosomal protein S16	rpsP	YES	TIGR00002 (HMM): ribosomal protein bS16	
+ribosomal protein S17	rpsQ	YES	PF00366 (HMM): ribosomal protein uS17	
+ribosomal protein S18	rpsR	YES	TIGR00165 (HMM): ribosomal protein bS18	
+ribosomal protein S19	rpsS	YES	TIGR01050 (HMM): ribosomal protein uS19	
+ribosomal protein S20	rpsT	YES	TIGR00029 (HMM): ribosomal protein bS20	
+preprotein translocase, SecA subunit	secA	YES	TIGR00963 (HMM): preprotein translocase, SecA subunit	
+preprotein translocase, SecE subunit	secE	YES	TIGR00964 (HMM): preprotein translocase, SecE subunit	
+preprotein translocase, SecG subunit	secG	YES	TIGR00810 (HMM): preprotein translocase, SecG subunit	
+preprotein translocase, SecY subunit	secY	YES	TIGR00967 (HMM): preprotein translocase, SecY subunit	
+seryl-tRNA synthetase	serS	YES	TIGR00414 (HMM): serine--tRNA ligase	
+SmpB protein	smpB	YES	TIGR00086 (HMM): SsrA-binding protein	
+threonyl-tRNA synthetase	thrS	YES	TIGR00418 (HMM): threonine--tRNA ligase	
+trigger factor	tig	YES	TIGR00115 (HMM): trigger factor	
+tRNA(Ile)-lysidine synthetase	tilS	YES	TIGR02432 (HMM): tRNA(Ile)-lysidine synthetase	
+tRNA threonylcarbamoyladenosine modification protein TsaD	tsaD	YES	TIGR03723 (HMM): tRNA threonylcarbamoyl adenosine modification protein TsaD	
+translation elongation factor Ts	tsf	YES	TIGR00116 (HMM): translation elongation factor Ts	
+tyrosyl-tRNA synthetase	tyrS	YES	TIGR00234 (HMM): tyrosine--tRNA ligase	
+excinuclease ABC, B subunit	uvrB	YES	TIGR00631 (HMM): excinuclease ABC subunit B	
+valyl-tRNA synthetase	valS	YES	TIGR00422 (HMM): valine--tRNA ligase	
+16S rRNA maturation RNase YgeY	ybeY	YES	TIGR00043 (HMM): rRNA maturation RNase YbeY	
+GTP-binding protein YchF	ychF	YES	TIGR00092 (HMM): GTP-binding protein YchF
