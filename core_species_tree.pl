@@ -8,6 +8,7 @@ use Bio::SimpleAlign;
 use Bio::LocatableSeq;
 use Data::Dumper;
 use Cwd 'abs_path';
+use Bio::TreeIO;
 
 ## Setup script path
 my $script_dir = abs_path($0);
@@ -29,6 +30,19 @@ my $skip = 0; ## SET TO 1 to skip to raxml and astral
 ## Call genes
 foreach my $fna (@ARGV){
     prodigal($fna) unless($skip == 1);
+    
+}
+
+## Make leaf map
+my %leaf2num = ();
+my %num2leaf = ();
+my $n = 1;
+foreach my $faa (glob("*.prod.faa")){
+    my $pref = $faa;
+    $pref =~ s/\.prod\.faa$//;
+    $leaf2num{$pref} = $n;
+    $num2leaf{$n} = $pref;
+    $n += 1;
 }
 
 ## Read in all cutoffs
@@ -80,7 +94,9 @@ foreach my $afa ( glob("*.afa") ){
 
 ## RaxML all
 foreach my $phy ( glob("*.phy") ){
-    raxmlall($phy);
+    my $t = $phy;
+    $t =~ s/\.phy$//;
+    raxmlall($phy) unless(-e "RAxML_bootstrap.$t.raxml");
 }
 
 ## ASTRAL
@@ -91,14 +107,42 @@ foreach my $bs (glob("RAxML_bootstrap.*.fs.raxml")){
 close $bfh;
 system("cat *.fs.tre > allfam.tre");
 system("java -jar $astral -i allfam.tre -b bs-files -r $bootstraps -o astral.species.out 2> /dev/null");
-system("head -n $bootstraps astral.species.out > astral.species.bs");
-system("tail -n 2 astral.species.out|head -n 1 > astral.species.consensus");
-system("tail -n 1 astral.species.out > astral.species.tre");
+
+## Translate leaves
+my @aso = ();
+open my $afh, '<', 'astral.species.out' or die $!;
+while(<$afh>){
+    chomp;
+    push @aso, $_;
+}
+close $afh;
+my $bsto = new Bio::TreeIO(-file=>'>astral.species.bs', -format=>'newick');
+my $consto = new Bio::TreeIO(-file=>'>astral.species.consensus', -format=>'newick');
+my $treto = new Bio::TreeIO(-file=>'>astral.species.tre', -format=>'newick');
+for(my $i=0;$i<scalar(@aso);$i+=1){
+    open my $tfh, '>', 'tmp.tree' or die $!;
+    print $tfh "$aso[$i]\n";
+    close $tfh;
+    my $tf = new Bio::TreeIO(-file=>'tmp.tree', -format=>'newick');
+    my $tree = $tf->next_tree;
+    foreach my $leaf ($tree->get_leaf_nodes){
+	$leaf->id($num2leaf{$leaf->id});
+    }
+    if($i < $bootstraps){
+	$bsto->write_tree($tree);
+    }elsif($i == $bootstraps){
+	$consto->write_tree($tree);
+    }elsif($i == $bootstraps + 1){
+	$treto->write_tree($tree);
+    }else{
+	die "Indexing error: i=$i\n";
+    }
+}
 
 ## Cleanup
 my @torm = ('tmp*', '*.reduced', 'RAxML_*', 'bs-files', '*.fs.*', '*.prod.*', 'allfam.tre');
 foreach (@torm){
-    system("rm $_");
+    #system("rm $_");
 }
 
 
@@ -246,7 +290,7 @@ sub nucphy{
 		$i += 1;
 	    }
 	}
-	my $newseq = new Bio::LocatableSeq(-seq=>$nucaln, -id=>$genome, -start=> 1, -end=>length($nuc)-3);
+	my $newseq = new Bio::LocatableSeq(-seq=>$nucaln, -id=>$leaf2num{$genome}, -start=> 1, -end=>length($nuc)-3);
 	$newaln->add_seq($newseq);
     }
     $p->write_aln($newaln);
