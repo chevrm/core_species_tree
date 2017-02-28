@@ -22,16 +22,17 @@ our $bootstraps = 100; ## default=100
 our $tigrdir = "$script_dir/tigrfam";
 our $tigrdb = $tigrdir . '/genprop0799.hmmdb';
 our $tigrcut = $tigrdir . '/genprop0799.cutoffs.tsv';
-our $raxml = '/home/mchevrette/builds/raxml-8.2.4/raxmlHPC';
+our $raxml = '/home/currielab/tools_and_software/RAxML-8.1.24/raxmlHPC-PTHREADS-SSE3';
 our $astral = '/home/mchevrette/builds/Astral/astral.4.10.12.jar';
 
 my $skip = 0; ## SET TO 1 to skip to raxml and astral
 
 ## Call genes
-foreach my $fna (@ARGV){
-    prodigal($fna) unless($skip == 1);
-    
-}
+#foreach my $fna (@ARGV){
+#    prodigal($fna) unless($skip == 1);    
+#}
+my $allarg = join(' ', @ARGV);
+prodigal_multi($allarg) unless($skip==1);
 
 ## Make leaf map
 my %leaf2num = ();
@@ -164,6 +165,13 @@ sub prodigal{
     print STDERR "$fna\tCalling genes with prodigal...";
     system("prodigal -t $pref.prod.train -c -i $fna > /dev/null 2>&1") unless(-e "$pref.prod.train");
     system("prodigal -c -i $fna -a $pref.prod.faa -d $pref.prod.orf -t $pref.prod.train > /dev/null 2>&1") unless(-e "$pref.prod.orf");
+    print STDERR "DONE!\n";
+}
+
+sub prodigal_multi{
+    my $big_list = shift;
+    print STDERR "$big_list\tCalling genes with prodigal...";
+    system("python $script_dir/prodigal_multi.py $big_list");
     print STDERR "DONE!\n";
 }
 
@@ -301,8 +309,8 @@ sub raxmlall{
     my $pref = $phy;
     $pref =~ s/\.phy//;
     print STDERR "$phy\traxml...";
-    system("$raxml -m GTRGAMMA -n $pref.raxml -s $phy -f a -x 897543 -N $bootstraps -p 345232 --silent > /dev/null");
-    system("$raxml -f b -m GTRGAMMA -z RAxML_bootstrap.$pref.raxml -t RAxML_bestTree.$pref.raxml -n $pref.BS_TREE > /dev/null");
+    system("$raxml -m GTRGAMMA -n $pref.raxml -s $phy -f a -x 897543 -N $bootstraps -p 345232 --silent -T 40 > /dev/null");
+    system("$raxml -f b -m GTRGAMMA -z RAxML_bootstrap.$pref.raxml -t RAxML_bestTree.$pref.raxml -n $pref.BS_TREE -T 40 > /dev/null");
     system("mv RAxML_bipartitions.$pref.BS_TREE $pref.tre") if(-e "RAxML_bipartitions.$pref.BS_TREE");
     print STDERR "DONE!\n";
 }
