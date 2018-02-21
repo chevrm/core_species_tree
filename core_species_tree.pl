@@ -15,7 +15,7 @@ my $script_dir = abs_path($0);
 $script_dir =~ s/\/core_species_tree\.pl//;
 
 ## Params
-our $cpu = 8; ## default=8
+our $cpu = 30; ## default=8
 our $bootstraps = 100; ## default=100
 
 ## Paths
@@ -38,13 +38,16 @@ prodigal_multi($allarg) unless($skip==1);
 my %leaf2num = ();
 my %num2leaf = ();
 my $n = 1;
+open my $lfh, '>', 'leafmap.tsv' or die $!;
 foreach my $faa (glob("*.prod.faa")){
     my $pref = $faa;
     $pref =~ s/\.prod\.faa$//;
     $leaf2num{$pref} = $n;
     $num2leaf{$n} = $pref;
+    print $lfh join("\t", $n, $pref)."\n";
     $n += 1;
 }
+close $lfh;
 
 ## Read in all cutoffs
 my %cut = ();
@@ -86,6 +89,13 @@ unless($skip == 1){
     
     ## Align all genes (protein)
     alignall(\%famseq);
+    
+    ## Dump ML
+    open my $mfh, '>', 'multilocus.afna' or die $!;
+    foreach my $p (sort %multilocus){
+	print $mfh '>'.$p."\n".$multilocus{$p}."\n";
+    }
+    close $mfh;
 }
     
 ## Convert alignments to nucl and save as phylip
