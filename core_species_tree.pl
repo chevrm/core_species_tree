@@ -81,8 +81,16 @@ close $tdbh;
 unless($skip == 1){
     my %famseq = ();
     my %multilocus = ();
-    foreach my $faa (glob("*.prod.faa")){
-	my ($fsr, $mlr) = runhmm($faa, \%famseq, \%multilocus);
+    ## Single threaded hmmsearch
+    #foreach my $faa (glob("*.prod.faa")){
+	#my ($fsr, $mlr) = runhmm($faa, \%famseq, \%multilocus);
+	#%famseq = %$fsr;
+	#%multilocus = %$mlr;
+    #}
+    ## Multi threaded hmmsearch
+    runhmm_multi( join(' ', glob("*.prod.faa")) );
+    foreach my $tblout (glob("*hmmtbl.out")){
+	my ($fsr, $mlr) = parsehmm_multi($tblout, \%famseq, \%multilocus);
 	%famseq = %$fsr;
 	%multilocus = %$mlr;
     }
@@ -92,7 +100,7 @@ unless($skip == 1){
     
     ## Dump ML
     open my $mfh, '>', 'multilocus.afna' or die $!;
-    foreach my $p (sort %multilocus){
+    foreach my $p (sort keys %multilocus){
 	print $mfh '>'.$p."\n".$multilocus{$p}."\n";
     }
     close $mfh;
@@ -253,6 +261,80 @@ sub runhmm{
     print "DONE!\n";
     return(\%fs, \%ml);
 }
+
+sub parsehmm_multi{
+    my ($tblout, $fsr, $mlr) = (shift, shift, shift);
+    my %fs = %$fsr;
+    my %ml = %$mlr; 
+    my $pref = $tblout;
+    $pref =~ s/\.prod\.hmmtbl\.out$//;
+    ## Parse hmmtbl
+    open my $sfh, '<', $tblout or die "Died in hmmscanner: $!";
+    my %ann = ();
+    my %bit = ();
+    while(<$sfh>){
+	unless($_ =~ m/^#/ || $_ =~ m/^\W/){
+	    chomp;
+	    my ($hit, $mod, $query, $dash, $evalue, $score, @rest) = split(/\s+/, $_);
+	    $bit{$query}{$hit} = $score;
+	}
+    }
+    close $sfh;
+    ## Assign annotations
+    my %grab = ();
+    #die Dumper(%bit) . "\n"; 
+    foreach my $q (sort keys %bit){
+	foreach my $h (sort keys %{$bit{$q}}){
+	    if( $bit{$q}{$h} >= $cut{$h}{'trust'}){
+		if(exists $ann{$h}{'q'}){
+		    if($ann{$h}{'b'} < $bit{$q}{$h}){
+			$ann{$h}{'q'} = $q;
+			$ann{$h}{'b'} = $bit{$q}{$h};
+			$grab{$q} = 1;
+		    }
+		}else{
+		    $ann{$h}{'q'} = $q;
+		    $ann{$h}{'b'} = $bit{$q}{$h};
+		    $grab{$q} = 1;
+		}
+	    }
+	}
+    }
+    ## Grab protein seqs
+    my %s = ();
+    my $fa = new Bio::SeqIO(-file=>$pref.'.prod.faa', -format=>'fasta');
+    while(my $seq = $fa->next_seq){
+	if(exists $grab{$seq->id}){
+	    my $ss = $seq->seq;
+	    $ss =~ s/\*//;
+	    $s{$seq->id} = $ss;
+	}
+    }
+    ## Assemble ML seq 
+    my $mls = '';
+    foreach my $tf (sort keys %cut){
+	if(exists $ann{$tf}{'q'}){
+	    $mls .= $s{$ann{$tf}{'q'}};
+	    $fs{$tf}{$pref}{'seq'} = $s{$ann{$tf}{'q'}};
+	    $fs{$tf}{$pref}{'orf'} = $ann{$tf}{'q'};
+	}else{
+	    foreach(1..$hmmlen{$tf}){
+		$mls .= 'X';
+	    }
+	}
+    }
+    $ml{$pref} = $mls;
+    print "DONE!\n";
+    return(\%fs, \%ml);
+}
+
+sub runhmm_multi{
+    my $faa_string = shift;
+     print STDERR "$faa_string\tScanning with TIGRFAM HMMs...";
+    system("python $script_dir/hmmer_multi.py $tigrdb $faa_string");
+    print STDERR "DONE!\n";
+}
+
 
 sub alignall{
     my $fsr = shift;
