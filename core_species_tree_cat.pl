@@ -12,7 +12,8 @@ use Bio::TreeIO;
 
 ## Setup script path
 my $script_dir = abs_path($0);
-$script_dir =~ s/\/core_species_tree\.pl//;
+my @a = split(/\//, $script_dir);
+$script_dir = join('/', @a[0..$#a-1]);
 
 ## Params
 our $cpu = 30; ## default=8
@@ -97,7 +98,6 @@ unless($skip == 1){
     
     ## Align all genes (protein)
     alignall(\%famseq);
-    
 }
     
 ## Convert alignments to nucl and save as phylip
@@ -105,61 +105,65 @@ foreach my $afa ( glob("*.afa") ){
     nucphy($afa) unless($skip == 1);
 }
 
-## RaxML all
-foreach my $phy ( glob("*.phy") ){
-    my $t = $phy;
-    $t =~ s/\.phy$//;
-    raxmlall($phy) unless(-e "RAxML_bootstrap.$t.raxml");
+## Convert to afna
+foreach my $phy (glob("*.phy")){
+    my $pref = $phy;
+    $pref =~ s/\.phy$//;
+    my $p = Bio::AlignIO->new(-format =>'phylip', -file => $phy);
+    my $f = Bio::AlignIO->new(-format =>'fasta', -file => '>'.$pref.'.afna');
+    while(my $a=$p->next_aln){
+	$f->write_aln($a);
+    }
 }
 
-## ASTRAL
-open my $bfh, '>', 'bs-files' or die $!;
-foreach my $bs (glob("RAxML_bootstrap.*.fs.raxml")){
-    print $bfh "$bs\n";
-}
-close $bfh;
-system("cat *.fs.tre > allfam.tre");
-system("java -jar $astral -i allfam.tre -b bs-files -r $bootstraps -o astral.species.out 2> /dev/null");
-
-## Translate leaves
-my @aso = ();
-open my $afh, '<', 'astral.species.out' or die $!;
-while(<$afh>){
+## Make ml.afna
+my %n2v = ();
+open my $lfh, '<', 'leafmap.tsv' or die $!;
+while(<$lfh>){
     chomp;
-    push @aso, $_;
+    my ($n, $v) = split(/\t/, $_);
+    $n2v{$n} = $v;
 }
-close $afh;
-my $bsto = new Bio::TreeIO(-file=>'>astral.species.bs', -format=>'newick');
-my $consto = new Bio::TreeIO(-file=>'>astral.species.consensus', -format=>'newick');
-my $treto = new Bio::TreeIO(-file=>'>astral.species.tre', -format=>'newick');
-for(my $i=0;$i<scalar(@aso);$i+=1){
-    open my $tfh, '>', 'tmp.tree' or die $!;
-    print $tfh "$aso[$i]\n";
-    close $tfh;
-    my $tf = new Bio::TreeIO(-file=>'tmp.tree', -format=>'newick');
-    my $tree = $tf->next_tree;
-    foreach my $leaf ($tree->get_leaf_nodes){
-	$leaf->id($num2leaf{$leaf->id});
+close $lfh;
+my %ml = ();
+foreach my $afa (glob("*.fs.afna")){
+    my %s = ();
+    my $fa = new Bio::SeqIO(-file=>$afa, -format=>'fasta');
+    my $l = undef;
+    while(my $seq = $fa->next_seq){
+	my $n = $seq->id;
+	$n =~ s/^(\d+).+/$1/;
+	$s{$n} = $seq->seq;
+	$l = length($seq->seq);
     }
-    if($i < $bootstraps){
-	$bsto->write_tree($tree);
-    }elsif($i == $bootstraps){
-	$consto->write_tree($tree);
-    }elsif($i == $bootstraps + 1){
-	$treto->write_tree($tree);
-    }else{
-	die "Indexing error: i=$i\n";
+    foreach my $n (sort keys %n2v){
+	if(exists $s{$n}){
+	    $ml{$n2v{$n}} .= $s{$n};
+	}else{
+	    for(my $i=0;$i<$l;$i+=1){
+		$ml{$n2v{$n}} .= '-';
+	    }
+	}
     }
+}
+open my $mlfh, '>', 'ml.afna' or die $!;
+foreach my $sid (sort keys %ml){
+    print $mlfh '>'.$sid."\n".$ml{$sid}."\n";
+}
+close $mlfh;
+
+## Convert to phy
+my $afna = new Bio::AlignIO(-file=>'ml.afna', -format=>'fasta');
+my $p = new Bio::AlignIO(-format =>'phylip', -file => ">ml.phy");
+while(my $aln = $afna->next_aln){
+    $p->write_aln($aln);
 }
 
 ## Cleanup
-my @torm = ('tmp*', '*.reduced', 'RAxML_*', 'bs-files', '*.fs.*', '*.prod.*', 'allfam.tre');
+my @torm = ('tmp*', '*.fs.phy', '*.fs.faa', '*.fs.afna', '*.fs.afa', '*ptrain', '*.prod.faa', '*.prod.orf', '*.prod.gff', '*.out');
 foreach (@torm){
-    #system("rm $_");
+    system("rm $_");
 }
-
-
-
 
 sub prodigal{
     my ($fna, $a) = (shift, shift);
